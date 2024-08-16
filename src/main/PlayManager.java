@@ -19,6 +19,9 @@ public class PlayManager {
     final int MINO_START_X;
     final int MINO_START_Y;
 
+    // Others
+    public static int dropInterval = 60; // A cada 60 frames o mino vai cair 1 bloco
+
     public PlayManager() {
         // Define a posição do retângulo de jogo
         left_x = (GamePanel.WIDTH / 2) - (WIDTH / 2); // 1280/2 - 360/2 = 460

@@ -18,13 +18,14 @@ public class GamePanel extends JPanel implements Runnable {
         playManager = new PlayManager();
     }
 
-    public void start() {
+    public void LaunchGame() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     @Override
     public void run() {
+        System.out.println("Game started");
         // Game loop
         double drawInterval = 1000000000.0/FPS;
         double delta = 0;// Armazena o tempo que falta para atualizar o jogo
@@ -46,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void update() {
-
+        playManager.update();
     }
 
     public void paintComponent(Graphics g) {

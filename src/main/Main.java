@@ -14,5 +14,6 @@ public class Main {
 
         window.setLocationRelativeTo(null);// Quer dizer que a não especificamos a posição da janela, então ela será centralizada na tela
         window.setVisible(true);
+        gamePanel.LaunchGame();
     }
 }
