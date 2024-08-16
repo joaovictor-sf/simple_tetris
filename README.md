@@ -159,4 +159,4 @@ A classe `Block` é responsável por representar um bloco do jogo. Ela estende a
 Cada peça do jogo é composta por 4 blocos. Cada bloco é representado por um objeto da classe `Block`.
 
 ## Ideias
-- 
+- Adicionar get/set quando necessário

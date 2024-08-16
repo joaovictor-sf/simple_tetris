@@ -11,10 +11,16 @@ public class GamePanel extends JPanel implements Runnable {
     PlayManager playManager;
 
     public GamePanel() {
+        // Configurações do JPanel
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(null);// Desabilita o layout padrão do JPanel
 
+        // Implementa o KeyHandler
+        this.addKeyListener(new KeyHandler());
+        this.setFocusable(true);
+
+        // Inicializa o PlayManager
         playManager = new PlayManager();
     }
 
@@ -25,7 +31,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Game started");
         // Game loop
         double drawInterval = 1000000000.0/FPS;
         double delta = 0;// Armazena o tempo que falta para atualizar o jogo
