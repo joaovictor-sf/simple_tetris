@@ -23,12 +23,34 @@ public class Mino {
     public void getDirection2(){}
     public void getDirection3(){}
     public void getDirection4(){}
-    public void updateXY(int direction){}
+
+    public void updateXY(int direction){
+        this.direction = direction;
+        for (int i = 0; i < 4; i++) {
+            blocks[i].x = tempBlocks[i].x;
+            blocks[i].y = tempBlocks[i].y;
+        }
+    }
 
     public void update(){
         // Move mino
         if (KeyHandler.upPressed){
-
+            System.out.println("Up pressed");
+            switch (direction){
+                case 1:
+                    getDirection2();
+                    break;
+                case 2:
+                    getDirection3();
+                    break;
+                case 3:
+                    getDirection4();
+                    break;
+                case 4:
+                    getDirection1();
+                    break;
+            }
+            KeyHandler.upPressed = false;
         }
         if (KeyHandler.downPressed){
             System.out.println("Down pressed");
