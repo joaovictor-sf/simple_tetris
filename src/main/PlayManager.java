@@ -3,6 +3,7 @@ package main;
 import mino.*;
 
 import java.awt.*;
+import java.util.Random;
 
 public class PlayManager {
     final int WIDTH=360;
@@ -37,25 +38,17 @@ public class PlayManager {
     }
 
     private Mino getRandomMino(){
-        int random = (int)(Math.random() * 7);
-        switch (random){
-            case 0:
-                return new Bar_Mino();
-            case 1:
-                return new Mino_Z1();
-            case 2:
-                return new Mino_Square();
-            case 3:
-                return new Mino_Z2();
-            case 4:
-                return new Mino_L1();
-            case 5:
-                return new Mino_T();
-            case 6:
-                return new Mino_L2();
-            default:
-                return null;
-        }
+        int random = new Random().nextInt(7);
+        return switch (random) {
+            case 0 -> new Bar_Mino();
+            case 1 -> new Mino_Z1();
+            case 2 -> new Mino_Square();
+            case 3 -> new Mino_Z2();
+            case 4 -> new Mino_L1();
+            case 5 -> new Mino_T();
+            case 6 -> new Mino_L2();
+            default -> null;
+        };
     }
 
     public void update(){

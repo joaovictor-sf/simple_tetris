@@ -11,6 +11,7 @@ public class Mino {
     public Block tempBlocks[] = new Block[4];
     int autoDropCounter = 0;
     public int direction = 1; // Cada mino tem 4 direções
+    boolean leftCollision, rightCollision, bottomCollision;
 
     public void create(Color color){
         for (int i = 0; i < 4; i++) {
@@ -19,10 +20,39 @@ public class Mino {
         }
     }
     public void setXY(int x, int y){}
+
     public void getDirection1(){}
     public void getDirection2(){}
     public void getDirection3(){}
     public void getDirection4(){}
+
+    public void checkMovementCollision(){
+        leftCollision = false;
+        rightCollision = false;
+        bottomCollision = false;
+
+        // Checa colisão com a parede esquerda
+        for (int i = 0; i < blocks.length; i++) {
+            if (blocks[i].x == PlayManager.left_x) {
+                leftCollision = true;
+            }
+        }
+
+        // Checa colisão com a parede direita
+        for (int i = 0; i < blocks.length; i++) {
+            if (blocks[i].x + Block.SIZE == PlayManager.right_x) {
+                rightCollision = true;
+            }
+        }
+
+        // Checa colisão com o chão
+        for (int i = 0; i < blocks.length; i++) {
+            if (blocks[i].y + Block.SIZE == PlayManager.bottom_y) {
+                bottomCollision = true;
+            }
+        }
+    }
+    public void checkRotationCollision(){}
 
     public void updateXY(int direction){
         this.direction = direction;
@@ -52,45 +82,58 @@ public class Mino {
             }
             KeyHandler.upPressed = false;
         }
-        if (KeyHandler.downPressed){
-            System.out.println("Down pressed");
-            blocks[0].y += Block.SIZE;
-            blocks[1].y += Block.SIZE;
-            blocks[2].y += Block.SIZE;
-            blocks[3].y += Block.SIZE;
 
-            // Reseta o contador de autoDrop
-            autoDropCounter = 0;
+        checkMovementCollision();
+
+        if (KeyHandler.downPressed){
+
+            // Checa colisão com o chão
+            if (!bottomCollision) {
+                blocks[0].y += Block.SIZE;
+                blocks[1].y += Block.SIZE;
+                blocks[2].y += Block.SIZE;
+                blocks[3].y += Block.SIZE;
+
+                // Reseta o contador de autoDrop
+                autoDropCounter = 0;
+            }
 
             KeyHandler.downPressed = false;
         }
         if (KeyHandler.leftPressed){
-            System.out.println("Left pressed");
-            blocks[0].x -= Block.SIZE;
-            blocks[1].x -= Block.SIZE;
-            blocks[2].x -= Block.SIZE;
-            blocks[3].x -= Block.SIZE;
+
+            // Checa colisão com a parede esquerda
+            if (!leftCollision) {
+                blocks[0].x -= Block.SIZE;
+                blocks[1].x -= Block.SIZE;
+                blocks[2].x -= Block.SIZE;
+                blocks[3].x -= Block.SIZE;
+            }
 
             KeyHandler.leftPressed = false;
         }
         if (KeyHandler.rightPressed){
-            System.out.println("Right pressed");
-            blocks[0].x += Block.SIZE;
-            blocks[1].x += Block.SIZE;
-            blocks[2].x += Block.SIZE;
-            blocks[3].x += Block.SIZE;
+
+            // Checa colisão com a parede direita
+            if (!rightCollision) {
+                blocks[0].x += Block.SIZE;
+                blocks[1].x += Block.SIZE;
+                blocks[2].x += Block.SIZE;
+                blocks[3].x += Block.SIZE;
+            }
 
             KeyHandler.rightPressed = false;
         }
 
         // Auto drop
         autoDropCounter++;
-        if (autoDropCounter > PlayManager.dropInterval) {
-            // Move o mino para baixo
-            blocks[0].y += Block.SIZE;
-            blocks[1].y += Block.SIZE;
-            blocks[2].y += Block.SIZE;
-            blocks[3].y += Block.SIZE;
+        if (autoDropCounter == PlayManager.dropInterval) {
+            if (!bottomCollision) {
+                blocks[0].y += Block.SIZE;
+                blocks[1].y += Block.SIZE;
+                blocks[2].y += Block.SIZE;
+                blocks[3].y += Block.SIZE;
+            }
             autoDropCounter = 0;
         }
     }
