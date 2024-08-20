@@ -160,3 +160,6 @@ Cada peça do jogo é composta por 4 blocos. Cada bloco é representado por um o
 
 ## Ideias
 - Adicionar get/set quando necessário
+- Concertar os erros apontados pelo sonarlint
+- Adicionar multiplayer(local e online)
+- Fazer o javaDoc

@@ -52,13 +52,42 @@ public class Mino {
             }
         }
     }
-    public void checkRotationCollision(){}
+    public void checkRotationCollision(){
+        leftCollision = false;
+        rightCollision = false;
+        bottomCollision = false;
+
+        // Checa colisão com a parede esquerda
+        for (int i = 0; i < blocks.length; i++) {
+            if (tempBlocks[i].x < PlayManager.left_x) {
+                leftCollision = true;
+            }
+        }
+
+        // Checa colisão com a parede direita
+        for (int i = 0; i < blocks.length; i++) {
+            if (tempBlocks[i].x + Block.SIZE > PlayManager.right_x) {
+                rightCollision = true;
+            }
+        }
+
+        // Checa colisão com o chão
+        for (int i = 0; i < blocks.length; i++) {
+            if (tempBlocks[i].y + Block.SIZE > PlayManager.bottom_y) {
+                bottomCollision = true;
+            }
+        }
+    }
 
     public void updateXY(int direction){
-        this.direction = direction;
-        for (int i = 0; i < 4; i++) {
-            blocks[i].x = tempBlocks[i].x;
-            blocks[i].y = tempBlocks[i].y;
+        checkRotationCollision();
+
+        if (!leftCollision && !rightCollision && !bottomCollision) {
+            this.direction = direction;
+            for (int i = 0; i < 4; i++) {
+                blocks[i].x = tempBlocks[i].x;
+                blocks[i].y = tempBlocks[i].y;
+            }
         }
     }
 
