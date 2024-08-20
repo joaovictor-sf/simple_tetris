@@ -73,6 +73,8 @@ public class PlayManager {
             staticBloks.add(currentMino.blocks[2]);
             staticBloks.add(currentMino.blocks[3]);
 
+            currentMino.deactivating = false;
+
             // Substitui o mino atual pelo próximo mino
             currentMino = nextMino;
             currentMino.setXY(MINO_START_X, MINO_START_Y);

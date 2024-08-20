@@ -13,6 +13,9 @@ public class Mino {
     public int direction = 1; // Cada mino tem 4 direções
     boolean leftCollision, rightCollision, bottomCollision;
     public boolean active = true;
+    public boolean deactivating;
+    int deactivateCounter = 0;
+
 
     public void create(Color color){
         for (int i = 0; i < 4; i++) {
@@ -125,6 +128,9 @@ public class Mino {
     }
 
     public void update(){
+
+        if (deactivating) deactivatingDelay();
+
         // Move mino
         if (KeyHandler.upPressed){
             System.out.println("Up pressed");
@@ -189,7 +195,8 @@ public class Mino {
 
         // Auto drop
         if (bottomCollision){
-            active = false;
+            deactivating = true;
+            //active = false;
         }else {
             autoDropCounter++;
             if (autoDropCounter == PlayManager.dropInterval) {
@@ -200,6 +207,22 @@ public class Mino {
 
                 autoDropCounter = 0;
             }
+        }
+    }
+
+    private void deactivatingDelay() {
+        deactivateCounter++;
+
+        // Apos 45 frames, fique estatico
+        if (deactivateCounter == 45) {
+            deactivateCounter = 0;
+
+            checkMovementCollision(); // Checa se o mino ainda esta no chão
+
+            if (bottomCollision) {
+                active = false;
+            }
+
         }
     }
 
