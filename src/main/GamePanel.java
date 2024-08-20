@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
     public static final int WIDTH = 1280;
-    public static final int HEIGHT = 720;
+    public static final int HEIGHT = 670; //720 - Só fiz essa mudança pq a tela do meu note é pequena
     final int FPS = 60;
     Thread gameThread;
     PlayManager playManager;

@@ -3,6 +3,7 @@ package main;
 import mino.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PlayManager {
@@ -18,6 +19,12 @@ public class PlayManager {
     final int MINO_START_X;
     final int MINO_START_Y;
 
+    //Next Mino
+    Mino nextMino;
+    final int NEXT_MINO_X;
+    final int NEXT_MINO_Y;
+    public static ArrayList<Block> staticBloks = new ArrayList<Block>();
+
     // Others
     public static int dropInterval = 60; // A cada 60 frames o mino vai cair 1 bloco
 
@@ -32,9 +39,15 @@ public class PlayManager {
         MINO_START_X = left_x + (WIDTH/2) - Block.SIZE;// 460 + 180 - 30 = 610 Vai ser o centro do retângulo
         MINO_START_Y = top_y + Block.SIZE;// 50 + 30 = 80 Vai ser o topo do retângulo
 
+        // Define a posição do próximo mino
+        NEXT_MINO_X = right_x + 175;
+        NEXT_MINO_Y = top_y + 505;
+
         // Cria um novo mino
         currentMino = getRandomMino();
         currentMino.setXY(MINO_START_X, MINO_START_Y);
+        nextMino = getRandomMino();
+        nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
     }
 
     private Mino getRandomMino(){
@@ -52,7 +65,22 @@ public class PlayManager {
     }
 
     public void update(){
-        currentMino.update();
+        // checa se o mino atual esta ativo
+        if (!currentMino.active){
+            // Se ele não estiver ativo, coloqueo no array de blocos estáticos
+            staticBloks.add(currentMino.blocks[0]);
+            staticBloks.add(currentMino.blocks[1]);
+            staticBloks.add(currentMino.blocks[2]);
+            staticBloks.add(currentMino.blocks[3]);
+
+            // Substitui o mino atual pelo próximo mino
+            currentMino = nextMino;
+            currentMino.setXY(MINO_START_X, MINO_START_Y);
+            nextMino = getRandomMino();
+            nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
+        }else {
+            currentMino.update();
+        }
     }
 
     public void draw(Graphics2D g2){
@@ -72,6 +100,14 @@ public class PlayManager {
         // Desenha o mino
         if (currentMino != null) {
             currentMino.draw(g2);
+        }
+
+        // Desenha o próximo mino
+        nextMino.draw(g2);
+
+        // Desenha os blocos estáticos
+        for (int i = 0; i < staticBloks.size(); i++) {
+            staticBloks.get(i).draw(g2);
         }
 
         // Desenha pause

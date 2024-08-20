@@ -12,6 +12,7 @@ public class Mino {
     int autoDropCounter = 0;
     public int direction = 1; // Cada mino tem 4 direções
     boolean leftCollision, rightCollision, bottomCollision;
+    public boolean active = true;
 
     public void create(Color color){
         for (int i = 0; i < 4; i++) {
@@ -155,15 +156,18 @@ public class Mino {
         }
 
         // Auto drop
-        autoDropCounter++;
-        if (autoDropCounter == PlayManager.dropInterval) {
-            if (!bottomCollision) {
+        if (bottomCollision){
+            active = false;
+        }else {
+            autoDropCounter++;
+            if (autoDropCounter == PlayManager.dropInterval) {
                 blocks[0].y += Block.SIZE;
                 blocks[1].y += Block.SIZE;
                 blocks[2].y += Block.SIZE;
                 blocks[3].y += Block.SIZE;
+
+                autoDropCounter = 0;
             }
-            autoDropCounter = 0;
         }
     }
 
