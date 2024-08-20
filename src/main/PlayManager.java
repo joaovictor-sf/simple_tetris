@@ -80,10 +80,79 @@ public class PlayManager {
             currentMino.setXY(MINO_START_X, MINO_START_Y);
             nextMino = getRandomMino();
             nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
+
+            // Quando o mino se torna inativo, checa se a linha está completa
+            checkDelete();
         }else {
             currentMino.update();
         }
     }
+
+    private void checkDelete() {
+        int x = left_x;
+        int y = top_y;
+        int count = 0;
+
+        while (x < right_x && y < bottom_y) {// Checa cada bloco do retângulo
+            for (int i = 0; i < staticBloks.size(); i++) {
+                if (staticBloks.get(i).x == x && staticBloks.get(i).y == y) {
+                    count++;
+                }
+            }
+            x += Block.SIZE;
+            if (x == right_x) {
+
+                if (count == 12) {
+                    for (int i = staticBloks.size() - 1; i > -1 ; i--) {
+                        if (staticBloks.get(i).y == y) {
+                            staticBloks.remove(i);
+                        }
+                    }
+
+                    for (int i = 0; i < staticBloks.size(); i++) {
+                        if (staticBloks.get(i).y < y) {
+                            staticBloks.get(i).y += Block.SIZE;
+                        }
+                    }
+                }
+
+                count = 0;
+                x = left_x;
+                y += Block.SIZE;
+            }
+        }
+    }
+
+    /* // Parece ser a forma mais eficiente, vou tentar mudar para ela quando terminar o código
+    private void checkLine() {
+        for (int i = 0; i < HEIGHT; i+=Block.SIZE) {// Checa cada linha
+            int count = 0;// Conta quantos blocos tem na linha
+            for (int j = 0; j < WIDTH; j+=Block.SIZE) {// Checa cada bloco da linha
+                for (int k = 0; k < staticBloks.size(); k++) {// Checa cada bloco estático
+                    if (staticBloks.get(k).x == left_x + j && staticBloks.get(k).y == top_y + i) {// Se o bloco estático estiver na linha
+                        count++;
+                    }
+                }
+            }
+            if (count == WIDTH/Block.SIZE) {// Se a linha estiver completa
+                deleteLine(i);
+            }
+        }
+    }
+
+    private void deleteLine(int i) {
+        for (int j = 0; j < staticBloks.size(); j++) {// Checa cada bloco estático
+            if (staticBloks.get(j).y == top_y + i) {// Se o bloco estático estiver na linha
+                staticBloks.remove(j);
+                j--;
+            }
+        }
+        for (int j = 0; j < staticBloks.size(); j++) {// Checa cada bloco estático
+            if (staticBloks.get(j).y < top_y + i) {// Se o bloco estático estiver acima da linha
+                staticBloks.get(j).y += Block.SIZE;// Move o bloco para baixo
+            }
+        }
+    }*/
 
     public void draw(Graphics2D g2){
         // Desenha o frame do jogo
