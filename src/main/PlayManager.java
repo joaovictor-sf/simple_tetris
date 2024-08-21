@@ -27,11 +27,15 @@ public class PlayManager {
 
     // Others
     public static int dropInterval = 60; // A cada 60 frames o mino vai cair 1 bloco
+    boolean gameover;
 
     // Effect
     boolean effectCounterOn;
     int effectCounter;
     ArrayList<Integer> effectY = new ArrayList<>();
+
+    // Score
+    int level = 1;
 
     public PlayManager() {
         // Define a posição do retângulo de jogo
@@ -77,6 +81,11 @@ public class PlayManager {
             staticBloks.add(currentMino.blocks[1]);
             staticBloks.add(currentMino.blocks[2]);
             staticBloks.add(currentMino.blocks[3]);
+
+            // check if gameover
+            if (currentMino.blocks[0].x == MINO_START_X && currentMino.blocks[0].y == MINO_START_Y) {
+                gameover = true;
+            }
 
             currentMino.deactivating = false;
 
@@ -208,9 +217,21 @@ public class PlayManager {
         // Desenha pause
         g2.setColor(Color.yellow);
         g2.setFont(g2.getFont().deriveFont(50f));
+        if (gameover){
+            x = left_x + 25;
+            y = top_y + 320;
+            g2.drawString("GAME OVER", x, y);
+        }
         if (KeyHandler.pausePressed) {
             g2.drawString("PAUSE", left_x + 70, top_y + 320);
         }
+
+        // Draw the Game Title
+        x = 35;
+        y = top_y + 320;
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Times New Roman", Font.ITALIC, 60));
+        g2.drawString("Simples Tetris", x, y);
 
     }
 }
