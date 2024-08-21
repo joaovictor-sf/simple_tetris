@@ -28,6 +28,11 @@ public class PlayManager {
     // Others
     public static int dropInterval = 60; // A cada 60 frames o mino vai cair 1 bloco
 
+    // Effect
+    boolean effectCounterOn;
+    int effectCounter;
+    ArrayList<Integer> effectY = new ArrayList<>();
+
     public PlayManager() {
         // Define a posição do retângulo de jogo
         left_x = (GamePanel.WIDTH / 2) - (WIDTH / 2); // 1280/2 - 360/2 = 460
@@ -103,6 +108,9 @@ public class PlayManager {
             if (x == right_x) {
 
                 if (count == 12) {
+                    effectCounterOn = true;
+                    effectY.add(y);
+
                     for (int i = staticBloks.size() - 1; i > -1 ; i--) {
                         if (staticBloks.get(i).y == y) {
                             staticBloks.remove(i);
@@ -181,11 +189,28 @@ public class PlayManager {
             staticBloks.get(i).draw(g2);
         }
 
+        // Draw effect
+        if (effectCounterOn){
+            effectCounter++;
+
+            g2.setColor(Color.white);
+            for (int i = 0; i < effectY.size(); i++){
+                g2.fillRect(left_x, effectY.get(i), WIDTH, Block.SIZE );
+            }
+
+            if (effectCounter == 10){
+                effectCounterOn = false;
+                effectCounter = 0;
+                effectY.clear();
+            }
+        }
+
         // Desenha pause
         g2.setColor(Color.yellow);
         g2.setFont(g2.getFont().deriveFont(50f));
         if (KeyHandler.pausePressed) {
             g2.drawString("PAUSE", left_x + 70, top_y + 320);
         }
+
     }
 }
