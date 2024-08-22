@@ -2,6 +2,13 @@ package mino;
 
 import java.awt.*;
 
+/**
+ * Mino_Z2 representa a peça Z2 e suas possíveis rotações.<br>
+ * A peça Z2 é representada da seguinte forma:<br> <br>
+ *   #<br>
+ * # #<br>
+ * #
+ */
 public class Mino_Z2 extends Mino{
     public Mino_Z2() {
         create(Color.green);

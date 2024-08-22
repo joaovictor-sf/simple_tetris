@@ -2,6 +2,12 @@ package mino;
 
 import java.awt.*;
 
+/**
+ * Mino_T representa a peça T e suas possíveis rotações.<br>
+ * A peça T é representada da seguinte forma:<br> <br>
+ *   # <br>
+ * # # #<br>
+ */
 public class Mino_T extends Mino{
     public Mino_T() {
         create(Color.magenta);

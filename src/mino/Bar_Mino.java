@@ -2,6 +2,10 @@ package mino;
 
 import java.awt.*;
 
+/**
+ * Classe que cria a peça de formato de barra. <br> <br>
+ * # # # #
+ */
 public class Bar_Mino extends Mino{
     public Bar_Mino() {
         create(Color.cyan);

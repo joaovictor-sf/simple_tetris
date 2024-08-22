@@ -2,6 +2,13 @@ package mino;
 
 import java.awt.*;
 
+/**
+ * Mino_L1 representa a peça L1 e suas possíveis rotações.<br>
+ * A peça L1 é representada da seguinte forma:<br> <br>
+ * # <br>
+ * #<br>
+ * # #
+ */
 public class Mino_L1 extends Mino{
     public Mino_L1() {
         create(Color.orange);

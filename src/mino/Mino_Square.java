@@ -2,6 +2,12 @@ package mino;
 
 import java.awt.*;
 
+/**
+ * Mino_Square representa a peça Square e suas possíveis rotações.<br>
+ * A peça Square é representada da seguinte forma:<br> <br>
+ * # #<br>
+ * # #
+ */
 public class Mino_Square extends Mino{
     public Mino_Square() {
         create(Color.yellow);
