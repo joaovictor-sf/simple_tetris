@@ -6,24 +6,63 @@ import main.GamePanel;
 
 import java.awt.*;
 
+/**
+ * Cada mino representa uma das 7 peças do jogo.<br>
+ * Cada peça é composta por 4 blocos.<br>
+ * Cada mino tem 4 direções.<br>
+ * @author joaovictor-sf
+ */
 public class Mino {
 
+    /**
+     * Os blocos que compõem o mino.
+     */
     public Block blocks[] = new Block[4];
+    /**
+     * Blocos temporários para checar colisões, antes de mover ou rotacionar o mino.
+     */
     public Block tempBlocks[] = new Block[4];
+    /**
+     * Contador para o auto drop.
+     */
     int autoDropCounter = 0;
+    /**
+     * Direção do mino.
+     * @default 1
+     */
     public int direction = 1; // Cada mino tem 4 direções
+    /**
+     * Representa se a peça colidiu.
+     */
     boolean leftCollision, rightCollision, bottomCollision;
+    /**
+     * Representa se a peça está ativa. As peças são as peças controladas pelo jogador e que estão caindo.
+     */
     public boolean active = true;
+    /**
+     * Representa se a peça está sendo desativada. As peças são desativadas quando colidem com o chão.
+     */
     public boolean deactivating;
+    /**
+     * Contador para o delay de desativação.
+     */
     int deactivateCounter = 0;
 
-
+    /**
+     * Cria um mino com a cor especificada.
+     * @param color Cor do mino.
+     */
     public void create(Color color){
         for (int i = 0; i < 4; i++) {
             blocks[i] = new Block(color);
             tempBlocks[i] = new Block(color);
         }
     }
+    /**
+     * Define a posição do mino.
+     * @param x Posição x.
+     * @param y Posição y.
+     */
     public void setXY(int x, int y){}
 
     public void getDirection1(){}
@@ -31,6 +70,9 @@ public class Mino {
     public void getDirection3(){}
     public void getDirection4(){}
 
+    /**
+     * Checa colisões de movimento.
+     */
     public void checkMovementCollision(){
         leftCollision = false;
         rightCollision = false;
@@ -59,6 +101,11 @@ public class Mino {
             }
         }
     }
+
+    /**
+     * Checa colisões de rotação.
+     * Se houver colisão, o mino não rotaciona.
+     */
     public void checkRotationCollision(){
         leftCollision = false;
         rightCollision = false;
@@ -88,6 +135,10 @@ public class Mino {
         }
     }
 
+    /**
+     * Atualiza a posição do mino.
+     * @param direction Direção do mino.
+     */
     public void updateXY(int direction){
         checkRotationCollision();
 
@@ -100,6 +151,9 @@ public class Mino {
         }
     }
 
+    /**
+     * Checa colisões com os blocos estáticos.
+     */
     private void checkStaticBlockCollision(){
         for (int i = 0; i < PlayManager.staticBloks.size(); i++) {
             int targetX = PlayManager.staticBloks.get(i).x;
@@ -128,6 +182,9 @@ public class Mino {
         }
     }
 
+    /**
+     * Realiza as atualizações de movimento do mino, como movimento, rotação e desativação.
+     */
     public void update(){
 
         if (deactivating) deactivatingDelay();
@@ -211,6 +268,9 @@ public class Mino {
         }
     }
 
+    /**
+     * Delay para desativar o mino.
+     */
     private void deactivatingDelay() {
         deactivateCounter++;
 
@@ -227,6 +287,10 @@ public class Mino {
         }
     }
 
+    /**
+     * Desenha o mino.
+     * @param g2 Gráficos 2D.
+     */
     public void draw(Graphics2D g2){
         int margin = 2;
 
