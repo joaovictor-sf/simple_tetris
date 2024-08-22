@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Classe responsável por gerenciar os eventos de teclado do jogo.<br>
+ * KeyHandler implementa a interface KeyListener.<br>
+ * @author joaovictor-sf
+ */
 public class KeyHandler implements KeyListener {
 
     public static boolean upPressed, downPressed, leftPressed, rightPressed, pausePressed;

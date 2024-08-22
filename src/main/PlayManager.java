@@ -6,39 +6,117 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Classe que gerencia o jogo.
+ * Ela é responsável por criar os minos, checar se o mino está ativo, checar se a linha está completa, deletar a linha,
+ * mover os blocos para baixo, calcular a pontuação, desenhar o frame do jogo, desenhar o mino, desenhar o próximo mino,
+ * desenhar os blocos estáticos, desenhar o efeito, desenhar o pause e desenhar o título do jogo.
+ * Ela também é responsável por definir a posição do retângulo de jogo, a posição inicial do mino, a posição do próximo mino,
+ * a velocidade de queda do mino, se o jogo acabou, se o efeito está ativo, o contador do efeito, a lista de posições do efeito,
+ * o nível, as linhas e a pontuação.
+ *
+ * @version 1.0
+ * @since 1.0
+ * @see Mino
+ * @author joaovictor-sf
+ */
 public class PlayManager {
+    /**
+     * Largura do retângulo de jogo.
+     */
     final int WIDTH=360;
+    /**
+     * Altura do retângulo de jogo.
+     */
     final  int HEIGHT=600;
+    /**
+     * Posição x do retângulo de jogo.
+     */
     public static int left_x;
+    /**
+     * Posição x do retângulo de jogo.
+     */
     public static int right_x;
+    /**
+     * Posição y do retângulo de jogo.
+     */
     public static int top_y;
+    /**
+     * Posição y do retângulo de jogo.
+     */
     public static int bottom_y;
 
-    // Mino
+    /**
+     * Mino atual.
+     */
     Mino currentMino;
+    /**
+     * Posição x do mino atual.
+     */
     final int MINO_START_X;
+    /**
+     * Posição y do mino atual.
+     */
     final int MINO_START_Y;
 
-    //Next Mino
+    /**
+     * Próximo mino.
+     */
     Mino nextMino;
+    /**
+     * Posição x do próximo mino.
+     */
     final int NEXT_MINO_X;
+    /**
+     * Posição y do próximo mino.
+     */
     final int NEXT_MINO_Y;
+    /**
+     * Lista de blocos estáticos.
+     */
     public static ArrayList<Block> staticBloks = new ArrayList<Block>();
 
-    // Others
+    /**
+     * Velocidade de queda do mino. A cada 60 frames o mino vai cair 1 bloco.
+     */
     public static int dropInterval = 60; // A cada 60 frames o mino vai cair 1 bloco
+    /**
+     * Se o jogo acabou.
+     */
     boolean gameover;
 
-    // Effect
+
+    /**
+     * Se o efeito está ativo.
+     */
     boolean effectCounterOn;
+    /**
+     * Contador do efeito.
+     */
     int effectCounter;
+    /**
+     * Lista de posições do efeito.
+     */
     ArrayList<Integer> effectY = new ArrayList<>();
 
-    // Score
+
+    /**
+     * Level atual
+     */
     int level = 1;
+    /**
+     * Linhas completas.
+     */
     int lines;
+    /**
+     * Pontuação.
+     */
     int score;
 
+    /**
+     * Construtor da classe PlayManager.
+     * Define a posição do retângulo de jogo, a posição inicial do mino, a posição do próximo mino e cria um novo mino.
+     */
     public PlayManager() {
         // Define a posição do retângulo de jogo
         left_x = (GamePanel.WIDTH / 2) - (WIDTH / 2); // 1280/2 - 360/2 = 460
@@ -61,6 +139,10 @@ public class PlayManager {
         nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
     }
 
+    /**
+     * Método que retorna um mino aleatório.
+     * @return Mino - mino aleatório
+     */
     private Mino getRandomMino(){
         int random = new Random().nextInt(7);
         return switch (random) {
@@ -75,6 +157,14 @@ public class PlayManager {
         };
     }
 
+    /**
+     * Método que atualiza o jogo.<br>
+     * Checa se o mino atual está ativo, se ele não estiver ativo, coloca-o no array de blocos estáticos, checa se o jogo acabou,
+     * substitui o mino atual pelo próximo mino, checa se a linha está completa e chama o método checkDelete.<br>
+     * Quando o mino se torna inativo, checa se a linha está completa.<br>
+     * Calcula a pontuação.<br>
+     * @see #checkDelete()
+     */
     public void update(){
         // checa se o mino atual esta ativo
         if (!currentMino.active){
@@ -105,6 +195,13 @@ public class PlayManager {
         }
     }
 
+    /**
+     * Método que checa se a linha está completa.<br>
+     * Checa cada bloco do retângulo e para cada bloco, checa se ele está na lista de blocos estáticos.<br>
+     * Se o bloco estiver na lista de blocos estáticos, incrementa o contador.<br>
+     * Se o contador for igual a 12, deleta a linha, incrementa o contador de linhas e move os blocos para baixo.<br>
+     * Calcula a pontuação.<br>
+     */
     private void checkDelete() {
         int x = left_x;
         int y = top_y;
@@ -168,37 +265,10 @@ public class PlayManager {
         }
     }
 
-    /* // Parece ser a forma mais eficiente, vou tentar mudar para ela quando terminar o código
-    private void checkLine() {
-        for (int i = 0; i < HEIGHT; i+=Block.SIZE) {// Checa cada linha
-            int count = 0;// Conta quantos blocos tem na linha
-            for (int j = 0; j < WIDTH; j+=Block.SIZE) {// Checa cada bloco da linha
-                for (int k = 0; k < staticBloks.size(); k++) {// Checa cada bloco estático
-                    if (staticBloks.get(k).x == left_x + j && staticBloks.get(k).y == top_y + i) {// Se o bloco estático estiver na linha
-                        count++;
-                    }
-                }
-            }
-            if (count == WIDTH/Block.SIZE) {// Se a linha estiver completa
-                deleteLine(i);
-            }
-        }
-    }
-
-    private void deleteLine(int i) {
-        for (int j = 0; j < staticBloks.size(); j++) {// Checa cada bloco estático
-            if (staticBloks.get(j).y == top_y + i) {// Se o bloco estático estiver na linha
-                staticBloks.remove(j);
-                j--;
-            }
-        }
-        for (int j = 0; j < staticBloks.size(); j++) {// Checa cada bloco estático
-            if (staticBloks.get(j).y < top_y + i) {// Se o bloco estático estiver acima da linha
-                staticBloks.get(j).y += Block.SIZE;// Move o bloco para baixo
-            }
-        }
-    }*/
-
+    /**
+     * Método que desenha o frame do jogo, o frame de next, o mino, o próximo mino, os blocos estáticos, o efeito, o pause e o título do jogo.
+     * @param g2 - Graphics2D
+     */
     public void draw(Graphics2D g2){
         // Desenha o frame do jogo
         g2.setColor(Color.white);
