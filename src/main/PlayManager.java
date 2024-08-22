@@ -36,6 +36,8 @@ public class PlayManager {
 
     // Score
     int level = 1;
+    int lines;
+    int score;
 
     public PlayManager() {
         // Define a posição do retângulo de jogo
@@ -85,6 +87,7 @@ public class PlayManager {
             // check if gameover
             if (currentMino.blocks[0].x == MINO_START_X && currentMino.blocks[0].y == MINO_START_Y) {
                 gameover = true;
+                GamePanel.soundEffect.play(2, false);
             }
 
             currentMino.deactivating = false;
@@ -106,6 +109,8 @@ public class PlayManager {
         int x = left_x;
         int y = top_y;
         int count = 0;
+        int lineCount = 0;
+
 
         while (x < right_x && y < bottom_y) {// Checa cada bloco do retângulo
             for (int i = 0; i < staticBloks.size(); i++) {
@@ -126,6 +131,22 @@ public class PlayManager {
                         }
                     }
 
+                    lineCount++;
+                    lines++;
+
+                    // Drop Speed
+                    // if the line score hits a certain number, incrise the drop speed
+                    // 1 is the fastest
+                    if (lines % 10 == 0 && dropInterval > 1){
+                        level++;
+                        if (dropInterval > 10) {
+                            dropInterval -= 10;
+                        } else {
+                            dropInterval--;
+                        }
+                    }
+
+                    // Move os blocos para baixo
                     for (int i = 0; i < staticBloks.size(); i++) {
                         if (staticBloks.get(i).y < y) {
                             staticBloks.get(i).y += Block.SIZE;
@@ -137,6 +158,13 @@ public class PlayManager {
                 x = left_x;
                 y += Block.SIZE;
             }
+        }
+
+        // Calcula a pontuação
+        if (lineCount > 0){
+            GamePanel.soundEffect.play(1, false);
+            int sigleLineScore = 10 * level;
+            score += sigleLineScore * lineCount;
         }
     }
 
@@ -184,6 +212,13 @@ public class PlayManager {
         g2.setFont(new Font("Arial", Font.PLAIN, 30));
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.drawString("Next", x + 60, y + 60);
+
+        g2.drawRect(x, top_y, 250, 300);
+        x += 40;
+        y = top_y + 90;
+        g2.drawString("Level: " + level, x, y); y += 70;
+        g2.drawString("Lines: " + lines, x, y); y += 70;
+        g2.drawString("Score: " + score, x, y);
 
         // Desenha o mino
         if (currentMino != null) {

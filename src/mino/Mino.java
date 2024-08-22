@@ -2,6 +2,7 @@ package mino;
 
 import main.KeyHandler;
 import main.PlayManager;
+import main.GamePanel;
 
 import java.awt.*;
 
@@ -133,7 +134,6 @@ public class Mino {
 
         // Move mino
         if (KeyHandler.upPressed){
-            System.out.println("Up pressed");
             switch (direction){
                 case 1:
                     getDirection2();
@@ -149,6 +149,7 @@ public class Mino {
                     break;
             }
             KeyHandler.upPressed = false;
+            GamePanel.soundEffect.play(3, false);
         }
 
         checkMovementCollision();
@@ -195,8 +196,8 @@ public class Mino {
 
         // Auto drop
         if (bottomCollision){
+            if (!deactivating) GamePanel.soundEffect.play(4, false);
             deactivating = true;
-            //active = false;
         }else {
             autoDropCounter++;
             if (autoDropCounter == PlayManager.dropInterval) {
