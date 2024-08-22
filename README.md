@@ -163,3 +163,6 @@ Cada peça do jogo é composta por 4 blocos. Cada bloco é representado por um o
 - Concertar os erros apontados pelo sonarlint
 - Adicionar multiplayer(local e online)
 - Fazer o javaDoc
+- Melhorar certas partes do código
+- Adicionar menus(Inicial, pause e game over)
+- Adicionar opção de salvar pontuação
